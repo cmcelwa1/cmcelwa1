@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milestone1_CM</title>
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous">
+    </script>
+</head>
+<body>
+    <header class="mainheader">
+        <h1 class="mainheader-text">Cameron McElwaney - IT 4403 - Section W01 - Summer</h1>
+        <p class="subheader-text">IT4403 Course website developed for class projects.</p>
+        <p class="subheader-text">Course Information: IT4403 Advanced Web & Mobile App</p>
+        <p class="subheader-text">KSU IT: <a href="https://ccse.kennesaw.edu/it/">https://ccse.kennesaw.edu/it/</a></p>
+    </header>
+    <main>
+        <!--List of Books -->
+        <div class="section-title" id="listbooks-section-title">
+            <h2 class="section-title-text">List of Books</h2>
+        </div>
+        <div class="listbooks-section">
+            <div class="listbooks-container">
+                <ul class="list-books">
+                    <!-- List of books generated via JS & JSON object. -->
+                </ul>
+            </div>
+        </div>
+    </main>
+</body>
+
+<!-- JQuery Script-->
+<script>
+    $(document).ready(function() {    
+        // List of Books API
+        var counter = 0;
+        $.ajax({
+            url: 'https://www.googleapis.com/books/v1/volumes?q=modern%20web',
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                var counter = 0;
+                data.items.forEach(item => {
+                    console.log(item.volumeInfo.title);
+                    appendBookList(counter);
+                    fillBookListing(counter, data);
+                    counter++;
+                });
+            }
+        });
+    });
+
+    function appendBookList(counter) {
+        $(".list-books").append("<div class='list-book-container' id='lb-container" + counter + "'>");
+        $("#lb-container" + counter).append("<div class='celltogrid' id='celltogrid" + counter +"'>");
+        $("#celltogrid" + counter).append("<div class='imagewrapper' id='imagetowrapper" + counter + "'>");
+        $("#imagetowrapper" + counter).append("<img class='lb-image' id='lb-image" + counter + "'>");
+        // Begin information column.
+        $("#lb-container" + counter).append("<div class='infocolumn' id='infocolumn" + counter + "'></div>");
+        $("#infocolumn" + counter).append("<div class='lb-titleholder' id='lb-titleholder" + counter + "'></div>")
+        $("#lb-titleholder" + counter).append("<h2 class='lb-title' id='lb-title" + counter + "'>hello</h2>");
+        $("#lb-titleholder" + counter).append("<h3 class='lb-subtitle' id='lb-subtitle" + counter + "'>hello</h3>");
+        $("#infocolumn" + counter).append("<p class='lb-author' id='lb-author" + counter + "'></p>");
+        $("#infocolumn" + counter).append("<p class='lb-publisher' id='lb-publisher" + counter + "'></p>");
+        $("#infocolumn" + counter).append("<p class='lb-genre' id='lb-genre" + counter + "'></p>");
+        $("#infocolumn" + counter).append("<p class='lb-ISBN' id='lb-ISBN" + counter + "'></p>");
+
+    };
+    
+    function fillBookListing(counter, data) {
+        $("#lb-image" + counter).attr("src", data.items[counter].volumeInfo.imageLinks.thumbnail);
+        $("#lb-title" + counter).html(data.items[counter].volumeInfo.title);
+        if (!data.items[counter].volumeInfo.subtitle){
+            $("#lb-subtitle" + counter).html("");
+        }
+        else{
+        $("#lb-subtitle" + counter).html(data.items[counter].volumeInfo.subtitle);
+        }
+        $("#lb-author" + counter).html("<b>Author: </b>" + data.items[counter].volumeInfo.authors[0]);
+        if (!data.items[counter].volumeInfo.publisher){
+            $("#lb-publisher" + counter).html("<b>Publisher: </b>None Listed");
+        }
+        else{
+        $("#lb-publisher" + counter).html("<b>Publisher: </b>" + data.items[counter].volumeInfo.publisher);
+        }
+        if (!data.items[counter].volumeInfo.categories){
+            $("#lb-genre" + counter).html("<b>Genre: </b>None Listed");
+        }
+        else{
+        $("#lb-genre" + counter).html("<b>Genre: </b>" + data.items[counter].volumeInfo.categories);
+        }
+        $("#lb-ISBN" + counter).html("<b>ISBN: </b>" + data.items[counter].volumeInfo.industryIdentifiers[0].identifier);
+    };
+</script>
+
+<!-- CSS Styles-->
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        margin: 20px 40px;
+        background-color: whitesmoke;
+    }
+    .bookimage-container {
+        margin-left: 40px;
+        margin-top: 60px;
+    }
+    .bookinfo-container {
+        margin-top: 20px;
+        margin-left: 40px;
+        padding-right: 40px;
+    }
+    .bookinfo-container .booktitle {
+        text-align: center;
+    }
+    .bookinfo h3 {
+        font-weight: bold;
+        font-size: 18px;
+    }
+    .bookinfo-ul {
+        margin-left: 60px;
+        list-style: none;
+    }
+    .bookinfo-ul li{
+        margin: 20px 0px;
+    }
+    .booktitle {
+        border: 1px solid black;
+        margin: 10px;
+        background-color: lightgray;
+    }
+    .celltogrid {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+    }
+    .indbook-image {
+        width: auto;
+        height: 400px;
+        border: 1px solid black;
+    }
+    .imagewrapper {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        width: 160px;
+        height: auto;
+    }
+    .indbook-section {
+        display: flex;
+        justify-content: center;  
+    }
+    .lb-titleholder {
+        border: 1px solid black;
+        margin: 10px;
+        background-color: lightgrey;
+    }
+    .list-books {
+        list-style: none;
+    }
+    .list-book-container {
+        display: grid;
+        grid-template-columns: 25% 75%;
+        grid-template-rows: 220px;
+        grid-template-areas: "lb-image lb-info";
+        margin: 10px 10%;
+        border: 1px solid black;
+    }
+    .lb-image {
+        grid-area: lb-image;
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        width: 100%;
+        height: auto;
+        border: 1px solid black;
+        box-shadow: 4px black;
+   }
+    .infocolumn {
+        grid-area: lb-info;
+        text-align: center;
+        display: grid;
+        align-items: center;
+        padding-bottom: 10px;
+    }
+    .mainheader {
+        margin-top: 20px;
+        text-align: center;
+    }
+    .mainheader p {
+        font-weight: bold;
+        font-size: 18px;
+    }
+    .section-title {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+    }
+    .subheader-text {
+        margin: 10px 0px;
+    }
+</style>
+</html>
