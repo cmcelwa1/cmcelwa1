@@ -51,20 +51,11 @@
         <div class="listbooks-section">
             <div class="listbooks-container">
                 <ul class="list-books">
-                        <div class="list-book-container" id="lb-container0">
-                         <div class="celltogrid" id="celltogrid0">
-                                <div class="imagewrapper" id="imagewrapper0">
-                                    <img class="lb-image" id="lb-image0"src="" alt="Cover Image"></img>
-                                </div>
-                            </div>
-                         <p id="infocolumn">Column2</p>
-                        </div>
+                    <!-- List of books generated via JS & JSON object. -->
                 </ul>
             </div>
         </div>
-
     </main>
-
 </body>
 
 <!-- JQuery Script-->
@@ -100,30 +91,26 @@
                 var counter = 0;
                 data.items.forEach(item => {
                     console.log(item.volumeInfo.title);
-                    //1 & 2
-                    $(".list-books").append("<div class='list-book-container' id='lb-container" + counter + "'>");
-                    // 3
-                    $("#lb-container" + counter).append("<div class='celltogrid' id='celltogrid'" + counter +"'>");
-                    // 4
-                    $("#celltogrid" + counter).append("<div class='imagewrapper' id='imagetowrapper'" + counter + "'>");
-                    // 5
-                    $("#imagetowrapper" + counter).append("<img class='lb-image' id='lb-image'" + counter + "'>");
-                    // 6
-                    $("#lb-image" + counter).attr("src", data.items[counter].volumeInfo.imageLinks.thumbnail);
-                    // 7
+                    appendBookList(counter);
+                    fillBookListing(counter, data);
                     counter++;
                 });
-                    // 1. Target #list-books
-                    // 2. Append div class=list-book-container and id=lb-container[i]
-                    // 3. Append div class=celltogrid
-                    // 4. Append div class=imagewrapper
-                    // 5. Append img class=lb-image id=lb-image[i]
-                    // 6. Set img to booksList.items[i].volumeInfo.imagelinks.thumbnail
-                    // 7. Iterate counter
-                   // <div class="list-book-container" id="lb-container0">
             }
         });
     });
+
+    function appendBookList(counter) {
+        $(".list-books").append("<div class='list-book-container' id='lb-container" + counter + "'>");
+        $("#lb-container" + counter).append("<div class='celltogrid' id='celltogrid" + counter +"'>");
+        $("#celltogrid" + counter).append("<div class='imagewrapper' id='imagetowrapper" + counter + "'>");
+        $("#imagetowrapper" + counter).append("<img class='lb-image' id='lb-image" + counter + "'>");
+        $("#lb-container" + counter).append("<p class='infocolumn' id='infocolumn" + counter + "'>Test</p>");
+    };
+    
+    function fillBookListing(counter, data) {
+        $("#lb-image" + counter).attr("src", data.items[counter].volumeInfo.imageLinks.thumbnail);
+        
+    };
 </script>
 
 <!-- CSS Styles-->
