@@ -51,7 +51,7 @@
         
 
         // TODO: API call is working correctly.
-        //      GET MORE RESULTS THAN 10 and USE PAGINATION.
+        // Add link to ind book page per book link clicked.
 
         // Paging operation
         $(".pagebutton").click(function(){
@@ -163,7 +163,7 @@
         else {
             $("lb-image" + counter).html("No Image Found");
         }
-        $("#lb-title" + counter).html(data.items[counter].volumeInfo.title);
+        $("#lb-title" + counter).html("<a href='https://cmmilestone2_bookdetails.html?bookID=" + data.items[counter].id + "'>" + data.items[counter].volumeInfo.title + "</a>");
         if (!data.items[counter].volumeInfo.subtitle){
             $("#lb-subtitle" + counter).html("");
         }
