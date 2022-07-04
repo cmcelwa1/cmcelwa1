@@ -50,7 +50,7 @@
 <!-- JQuery Script-->
 <script>
     $(document).ready(function() {
-        var $bookid = 'kzsdDgAAQBAJ';
+        var $bookid = document.location.href.split('/').pop();
         // Individual Book API
         // Need to pass in book ID from chosen book in search page.
         $.ajax({
