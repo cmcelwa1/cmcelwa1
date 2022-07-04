@@ -50,8 +50,9 @@
 <!-- JQuery Script-->
 <script>
     $(document).ready(function() {
-        var $bookid = 'Wfan6L9RGgYC';
+        var $bookid = 'kzsdDgAAQBAJ';
         // Individual Book API
+        // Need to pass in book ID from chosen book in search page.
         $.ajax({
             url: 'https://www.googleapis.com/books/v1/volumes/' + $bookid,
             type: "GET",
@@ -60,7 +61,7 @@
                 console.log(data);
                 $(".indbook-title").html(data.volumeInfo.title);
                 $(".indbook-subtitle").html(data.volumeInfo.subtitle);
-                $(".indbook-image").attr("src", data.volumeInfo.imageLinks.medium);
+                $(".indbook-image").attr("src", data.volumeInfo.imageLinks.large);
                 $(".indbook-image").attr("alt", "Book Cover Image");
                 $(".authorname").html("<b>Author: </b>" + data.volumeInfo.authors[0]);
                 $(".publishername").html("<b>Publisher: </b>" + data.volumeInfo.publisher);
@@ -73,7 +74,6 @@
                 }
                 
                 $(".description").html("<b>Description: </b></br></br>" + data.volumeInfo.description);
-                $("#lb-image").attr("src", data.volumeInfo.imageLinks.medium);
             }
         });
     });
