@@ -163,7 +163,7 @@
         else {
             $("lb-image" + counter).html("No Image Found");
         }
-        $("#lb-title" + counter).html("<a href='https://cmmilestone2_bookdetails.html?bookID=" + data.items[counter].id + "'>" + data.items[counter].volumeInfo.title + "</a>");
+        $("#lb-title" + counter).html("<a href='https://cmmilestone2_bookdetails.html/" + data.items[counter].id + "'>" + data.items[counter].volumeInfo.title + "</a>");
         if (!data.items[counter].volumeInfo.subtitle){
             $("#lb-subtitle" + counter).html("");
         }
