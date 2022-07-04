@@ -1,11 +1,164 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Milestone2_CM</title>
-</head>
-<body>
-    <h>TO BE COMPLETED</h>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Milestone1_CM</title>
+        <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous">
+        </script>
+    </head>
+    <body>
+        <header class="mainheader">
+            <h1 class="mainheader-text">Cameron McElwaney - IT 4403 - Section W01 - Summer</h1>
+            <p class="subheader-text">IT4403 Course website developed for class projects.</p>
+            <p class="subheader-text">Course Information: IT4403 Advanced Web & Mobile App</p>
+            <p class="subheader-text">KSU IT: <a href="https://ccse.kennesaw.edu/it/">https://ccse.kennesaw.edu/it/</a></p>
+            <a href="https://cmcelwa1.github.io/cmcelwa1/">Home</a>
+        </header>
+        <main>
+            <!-- Individual Book -->
+            <div class="section-title" id="indbook-section-title">
+                <h2 class="section-title-text">Individual Book</h2>
+            </div>
+            <div class="indbook-section">
+                <div class="bookimage-container">
+                    <img class="indbook-image" src="" alt="Cover Image">
+                </div>
+                <div class="bookinfo-container">
+                    <div class="booktitle">
+                        <h2 class="indbook-title"></h2>
+                        <h3 class="indbook-subtitle"></h3>
+                    </div>
+                    <div class="bookinfo">
+                        <ul class="bookinfo-ul">
+                            <li class="authorname"></li>
+                            <li class="publishername"></li>
+                            <li class="datepublished"></li>
+                            <li class="genres"></li>
+                            <li class="price"></li>
+                            <li class="description"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+
+<!-- JQuery Script-->
+<script>
+    $(document).ready(function() {
+        var $bookid = 'Wfan6L9RGgYC';
+        // Individual Book API
+        $.ajax({
+            url: 'https://www.googleapis.com/books/v1/volumes/' + $bookid,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                $(".indbook-title").html(data.volumeInfo.title);
+                $(".indbook-subtitle").html(data.volumeInfo.subtitle);
+                $(".indbook-image").attr("src", data.volumeInfo.imageLinks.medium);
+                $(".indbook-image").attr("alt", "Book Cover Image");
+                $(".authorname").html("<b>Author: </b>" + data.volumeInfo.authors[0]);
+                $(".publishername").html("<b>Publisher: </b>" + data.volumeInfo.publisher);
+                $(".datepublished").html("<b>Date Published: </b>" + data.volumeInfo.publishedDate);
+                $(".genres").html("<b>Genres: </b>" + data.volumeInfo.categories[4]);
+                if (data.saleInfo.saleability != "NOT_FOR_SALE") {
+                    $(".price").html("<b>Price: </b>" + data.saleInfo.saleability);
+                } else {
+                    $(".price").html("<b>Price: </b> Out of stock");
+                }
+                
+                $(".description").html("<b>Description: </b></br></br>" + data.volumeInfo.description);
+                $("#lb-image").attr("src", data.volumeInfo.imageLinks.medium);
+            }
+        });
+    });
+</script>
+
+<!-- CSS Styles-->
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        margin: 20px 40px;
+        background-color: whitesmoke;
+    }
+    .bookimage-container {
+        margin-left: 40px;
+        margin-top: 60px;
+    }
+    .bookinfo-container {
+        margin-top: 20px;
+        margin-left: 40px;
+        padding-right: 40px;
+    }
+    .bookinfo-container .booktitle {
+        text-align: center;
+    }
+    .bookinfo h3 {
+        font-weight: bold;
+        font-size: 18px;
+    }
+    .bookinfo-ul {
+        margin-left: 60px;
+        list-style: none;
+    }
+    .bookinfo-ul li{
+        margin: 20px 0px;
+    }
+    .booktitle {
+        border: 1px solid black;
+        margin: 10px;
+        background-color: lightblue;
+    }
+    .celltogrid {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+    }
+    .indbook-image {
+        width: auto;
+        height: 400px;
+        border: 1px solid black;
+    }
+    .imagewrapper {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        width: 160px;
+        height: auto;
+    }
+    .indbook-section {
+        display: flex;
+        justify-content: center;  
+    }
+    .mainheader {
+        margin-top: 20px;
+        text-align: center;
+    }
+    .mainheader p {
+        font-weight: bold;
+        font-size: 18px;
+    }
+    .section-title {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+        background-color: lightskyblue;
+    }
+    .subheader-text {
+        margin: 10px 0px;
+    }
+</style>
 </html>
