@@ -27,6 +27,13 @@
             <button class="searchbutton">Go</button>
         </div>
         <div class="listbooks-section">
+            <div class="pagebutton-container">
+                <p>Results: (10 per page -- 40 maximum)</p>
+                <button class="pagebutton" id="pagebutton1">1</button>
+                <button class="pagebutton" id="pagebutton2">2</button>
+                <button class="pagebutton" id="pagebutton3">3</button>
+                <button class="pagebutton" id="pagebutton4">4</button>
+            </div>
             <div class="listbooks-container">
                 <ul class="list-books">
                     <!-- List of books generated via JS & JSON object. -->
@@ -41,24 +48,76 @@
     $(document).ready(function() {    
         var counter = 0;
 
-        // Searching operation and API call
+        
 
         // TODO: API call is working correctly.
         //      GET MORE RESULTS THAN 10 and USE PAGINATION.
-        
+
+        // Paging operation
+        $(".pagebutton").click(function(){
+            var searchinput = $(".searchinput").val();
+            var pagenum = this.id;
+            var startIndex;
+
+            if (pagenum === "pagebutton1") {
+                startIndex = "0";
+            } 
+            else if (pagenum === "pagebutton2") {
+                startIndex = "10";
+            }
+            else if (pagenum === "pagebutton3") {
+                startIndex = "20";
+            }
+            else if (pagenum === "pagebutton4") {
+                startIndex = "30";
+            }
+
+            console.log(pagenum);
+
+            clearBookList();
+
+            $(".pagebutton").removeClass("active");
+            $(this).addClass("active");
+
+            if (!searchinput){
+                searchurl = 'https://www.googleapis.com/books/v1/volumes?q=Hello&startIndex=' + startIndex + '&maxResults=10';
+            }
+            else{
+                searchurl = 'https://www.googleapis.com/books/v1/volumes?q=' + searchinput + '&startIndex=' + startIndex + '&maxResults=10';
+            }
+            $.ajax({
+            url: searchurl,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                var counter = 0;
+                data.items.forEach(item => {
+                    appendBookList(counter);
+                    fillBookListing(counter, data);
+                    counter++;
+                    });
+                }
+            });
+        });
+
+        // Searching operation
         $(".searchbutton").click(function(){
             var searchinput = $(".searchinput").val();
             var url;
+
+            $(".pagebutton").removeClass("active");
+            $("#pagebutton1").addClass("active");
 
             clearBookList();
 
             console.log(searchinput);
 
             if (!searchinput){
-                searchurl = 'https://www.googleapis.com/books/v1/volumes?q=Hello';
+                searchurl = 'https://www.googleapis.com/books/v1/volumes?q=Hello&startIndex=0&maxResults=10';
             }
             else{
-                searchurl = 'https://www.googleapis.com/books/v1/volumes?q=' + searchinput;
+                searchurl = 'https://www.googleapis.com/books/v1/volumes?q=' + searchinput + '&startIndex=0&maxResults=10';
             }
             $.ajax({
             url: searchurl,
@@ -90,7 +149,6 @@
         $("#infocolumn" + counter).append("<p class='lb-author' id='lb-author" + counter + "'></p>");
         $("#infocolumn" + counter).append("<p class='lb-publisher' id='lb-publisher" + counter + "'></p>");
         $("#infocolumn" + counter).append("<p class='lb-genre' id='lb-genre" + counter + "'></p>");
-        $("#infocolumn" + counter).append("<p class='lb-ISBN' id='lb-ISBN" + counter + "'></p>");
     };
 
     function clearBookList() {
@@ -99,7 +157,12 @@
     };
     
     function fillBookListing(counter, data) {
-        $("#lb-image" + counter).attr("src", data.items[counter].volumeInfo.imageLinks.thumbnail);
+        if (data.items[counter].volumeInfo.imageLinks) {
+            $("#lb-image" + counter).attr("src", data.items[counter].volumeInfo.imageLinks.thumbnail);
+        }
+        else {
+            $("lb-image" + counter).html("No Image Found");
+        }
         $("#lb-title" + counter).html(data.items[counter].volumeInfo.title);
         if (!data.items[counter].volumeInfo.subtitle){
             $("#lb-subtitle" + counter).html("");
@@ -120,7 +183,6 @@
         else{
         $("#lb-genre" + counter).html("<b>Genre: </b>" + data.items[counter].volumeInfo.categories);
         }
-        $("#lb-ISBN" + counter).html("<b>ISBN: </b>" + data.items[counter].volumeInfo.industryIdentifiers[0].identifier);
     };
 </script>
 
@@ -196,6 +258,16 @@
     .mainheader p {
         font-weight: bold;
         font-size: 18px;
+    }
+    .pagebutton {
+        margin-top: 5px;
+        padding: 5px;
+    }
+    .pagebutton.active {
+        background-color: gray;
+    }
+    .pagebutton-container {
+        text-align: center;
     }
     .searchinput {
         margin: 5px 10px;
