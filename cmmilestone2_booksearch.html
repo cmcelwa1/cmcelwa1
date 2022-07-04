@@ -161,10 +161,8 @@
         else {
             $("lb-image" + counter).html("No Image Found");
         }
-        $("#lb-title" + counter).html("<a class='targetbook' id='" + data.items[counter].id + "' href='https://cmcelwa1.github.io/cmcelwa1/cmmilestone2_bookdetails.html'>" + data.items[counter].volumeInfo.title + "</a>");
-        console.log(data.items[counter].id);
-        localStorage.setItem("key", data.items[counter].id);
-        console.log(localStorage.getItem("key"));
+        $("#lb-title" + counter).html("<a class='targetbook' id='" + data.items[counter].id + "' href=''>" + data.items[counter].volumeInfo.title + "</a>");
+    
         if (!data.items[counter].volumeInfo.subtitle){
             $("#lb-subtitle" + counter).html("");
         }
@@ -184,6 +182,14 @@
         else{
         $("#lb-genre" + counter).html("<b>Genre: </b>" + data.items[counter].volumeInfo.categories);
         }
+
+        $(".targetbook").mouseover(function() {
+            var targetid = this.id;
+            var params = new URLSearchParams();
+            params.append("bookID", targetid);
+            this.href = "https://cmcelwa1.github.io/cmcelwa1/cmmilestone2_bookdetails.html?" + params.toString();
+            console.log(this.href);
+        });
     };
 
 

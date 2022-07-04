@@ -50,10 +50,8 @@
 <!-- JQuery Script-->
 <script>
     $(document).ready(function() {
-        var bookidid = localStorage.getItem("key");
-        console.log("bookidid=" + bookidid);
-        var $bookid;            
-        $bookid = 'kzsdDgAAQBAJ';
+        var params = new URLSearchParams(window.location.search);
+        var $bookid = params.get("bookID");
         // Individual Book API
         // Need to pass in book ID from chosen book in search page.
         $.ajax({
