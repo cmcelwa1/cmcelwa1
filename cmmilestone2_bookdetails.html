@@ -69,7 +69,7 @@
                 $(".datepublished").html("<b>Date Published: </b>" + data.volumeInfo.publishedDate);
                 $(".genres").html("<b>Genres: </b>" + data.volumeInfo.categories[4]);
                 if (data.saleInfo.saleability != "NOT_FOR_SALE") {
-                    $(".price").html("<b>Price: </b>" + data.saleInfo.saleability);
+                    $(".price").html("<b>Price: </b>$" + data.saleInfo.retailPrice.amount);
                 } else {
                     $(".price").html("<b>Price: </b> Out of stock");
                 }
