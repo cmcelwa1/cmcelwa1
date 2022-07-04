@@ -44,7 +44,6 @@
         // Searching operation and API call
 
         // TODO: API call is working correctly.
-        //      NEED TO CLEAR LISTINGS WHEN GO IS PRESSED.
         //      NEED TO FORMAT RESULTS BETTER AND USE PAGINATION.
         
         $(".searchbutton").click(function(){
@@ -56,6 +55,7 @@
             else{
                 url = 'https://www.googleapis.com/books/v1/volumes?q=' + searchinput;
             }
+            clearBookList();
             console.log(searchinput);
             $.ajax({
             url: url,
@@ -75,8 +75,7 @@
     });
 
     function appendBookList(counter) {
-        $(".list-books").remove();
-        $(".listbooks-container").append("<ul class='list-books'></ul>");
+        //Removing list every time. TODO: Fix
         $(".list-books").append("<div class='list-book-container' id='lb-container" + counter + "'>");
         $("#lb-container" + counter).append("<div class='celltogrid' id='celltogrid" + counter +"'>");
         $("#celltogrid" + counter).append("<div class='imagewrapper' id='imagetowrapper" + counter + "'>");
@@ -90,7 +89,11 @@
         $("#infocolumn" + counter).append("<p class='lb-publisher' id='lb-publisher" + counter + "'></p>");
         $("#infocolumn" + counter).append("<p class='lb-genre' id='lb-genre" + counter + "'></p>");
         $("#infocolumn" + counter).append("<p class='lb-ISBN' id='lb-ISBN" + counter + "'></p>");
+    };
 
+    function clearBookList() {
+        $(".list-books").remove();
+        $(".listbooks-container").append("<ul class='list-books'></ul>");
     };
     
     function fillBookListing(counter, data) {
