@@ -52,6 +52,10 @@
     $(document).ready(function() {
         var params = new URLSearchParams(window.location.search);
         var $bookid = params.get("bookID");
+        if (!$bookid) {
+            $bookid = "LZmyDwAAQBAJ";
+        }
+        console.log($bookid);        
         // Individual Book API
         // Need to pass in book ID from chosen book in search page.
         $.ajax({
@@ -62,7 +66,7 @@
                 console.log(data);
                 $(".indbook-title").html(data.volumeInfo.title);
                 $(".indbook-subtitle").html(data.volumeInfo.subtitle);
-                $(".indbook-image").attr("src", data.volumeInfo.imageLinks.large);
+                $(".indbook-image").attr("src", data.volumeInfo.imageLinks.medium);
                 $(".indbook-image").attr("alt", "Book Cover Image");
                 $(".authorname").html("<b>Author: </b>" + data.volumeInfo.authors[0]);
                 $(".publishername").html("<b>Publisher: </b>" + data.volumeInfo.publisher);
