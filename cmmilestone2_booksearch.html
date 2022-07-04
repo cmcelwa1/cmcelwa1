@@ -101,6 +101,11 @@
             });
         });
 
+        // Store book ID
+        $(".targetbook").click(function(){
+            localStorage.setItem("bookID", this.id);
+        });
+
         // Searching operation
         $(".searchbutton").click(function(){
             var searchinput = $(".searchinput").val();
@@ -163,7 +168,7 @@
         else {
             $("lb-image" + counter).html("No Image Found");
         }
-        $("#lb-title" + counter).html("<a href='https://cmcelwa1.github.io/cmcelwa1/cmmilestone2_booksearch.html" + data.items[counter].id + "'>" + data.items[counter].volumeInfo.title + "</a>");
+        $("#lb-title" + counter).html("<a class='targetbook' id='" + data.items[counter].id +  "' href='https://cmcelwa1.github.io/cmcelwa1/cmmilestone2_bookdetails.html'>" + data.items[counter].volumeInfo.title + "</a>");
         if (!data.items[counter].volumeInfo.subtitle){
             $("#lb-subtitle" + counter).html("");
         }
@@ -184,6 +189,7 @@
         $("#lb-genre" + counter).html("<b>Genre: </b>" + data.items[counter].volumeInfo.categories);
         }
     };
+
 </script>
 
 <!-- CSS Styles-->
