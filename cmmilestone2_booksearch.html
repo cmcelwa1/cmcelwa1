@@ -48,7 +48,8 @@
     $(document).ready(function() {    
         var counter = 0;
 
-        
+        // Store book ID
+        localStorage.setItem("bookID", 1);
 
         // TODO: API call is working correctly.
         // Add link to ind book page per book link clicked.
@@ -99,11 +100,6 @@
                     });
                 }
             });
-        });
-
-        // Store book ID
-        $(".targetbook").click(function(){
-            localStorage.setItem("bookID", 1);
         });
 
         // Searching operation
