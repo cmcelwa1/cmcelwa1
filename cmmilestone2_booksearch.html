@@ -46,6 +46,7 @@
         // TODO: API call is working correctly.
         //      NEED TO CLEAR LISTINGS WHEN GO IS PRESSED.
         //      NEED TO FORMAT RESULTS BETTER AND USE PAGINATION.
+        
         $(".searchbutton").click(function(){
             var searchinput = $(".searchinput").val();
             var url;
@@ -74,6 +75,8 @@
     });
 
     function appendBookList(counter) {
+        $(".list-books").remove();
+        $(".listbooks-container").append("<ul class='list-books'></ul>");
         $(".list-books").append("<div class='list-book-container' id='lb-container" + counter + "'>");
         $("#lb-container" + counter).append("<div class='celltogrid' id='celltogrid" + counter +"'>");
         $("#celltogrid" + counter).append("<div class='imagewrapper' id='imagetowrapper" + counter + "'>");
