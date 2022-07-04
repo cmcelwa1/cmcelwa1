@@ -19,9 +19,9 @@
             <a href="https://cmcelwa1.github.io/cmcelwa1/">Home</a>
         </header>
         <main>
-            <!-- Individual Book -->
+            <!-- Individual Book / Book Details -->
             <div class="section-title" id="indbook-section-title">
-                <h2 class="section-title-text">Individual Book</h2>
+                <h2 class="section-title-text">Book Details</h2>
             </div>
             <div class="indbook-section">
                 <div class="bookimage-container">
@@ -50,6 +50,8 @@
 <!-- JQuery Script-->
 <script>
     $(document).ready(function() {
+        var bookidid = localStorage.getItem("bookID");
+        console.log(bookidid);
         var $bookid;            
         $bookid = 'kzsdDgAAQBAJ';
         // Individual Book API
