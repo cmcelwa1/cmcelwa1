@@ -44,21 +44,24 @@
         // Searching operation and API call
 
         // TODO: API call is working correctly.
-        //      NEED TO FORMAT RESULTS BETTER AND USE PAGINATION.
+        //      GET MORE RESULTS THAN 10 and USE PAGINATION.
         
         $(".searchbutton").click(function(){
             var searchinput = $(".searchinput").val();
             var url;
+
+            clearBookList();
+
+            console.log(searchinput);
+
             if (!searchinput){
-                url = 'https://www.googleapis.com/books/v1/volumes?q=Web';
+                searchurl = 'https://www.googleapis.com/books/v1/volumes?q=Hello';
             }
             else{
-                url = 'https://www.googleapis.com/books/v1/volumes?q=' + searchinput;
+                searchurl = 'https://www.googleapis.com/books/v1/volumes?q=' + searchinput;
             }
-            clearBookList();
-            console.log(searchinput);
             $.ajax({
-            url: url,
+            url: searchurl,
             type: "GET",
             dataType: "json",
             success: function (data) {
@@ -75,7 +78,6 @@
     });
 
     function appendBookList(counter) {
-        //Removing list every time. TODO: Fix
         $(".list-books").append("<div class='list-book-container' id='lb-container" + counter + "'>");
         $("#lb-container" + counter).append("<div class='celltogrid' id='celltogrid" + counter +"'>");
         $("#celltogrid" + counter).append("<div class='imagewrapper' id='imagetowrapper" + counter + "'>");
@@ -105,7 +107,7 @@
         else{
         $("#lb-subtitle" + counter).html(data.items[counter].volumeInfo.subtitle);
         }
-        $("#lb-author" + counter).html("<b>Author: </b>" + data.items[counter].volumeInfo.authors[0]);
+        $("#lb-author" + counter).html("<b>Author: </b>" + data.items[counter].volumeInfo.authors);
         if (!data.items[counter].volumeInfo.publisher){
             $("#lb-publisher" + counter).html("<b>Publisher: </b>None Listed");
         }
