@@ -22,7 +22,9 @@
     <main>
         <!--List of Books -->
         <div class="section-title" id="listbooks-section-title">
-            <h2 class="section-title-text">List of Books</h2>
+            <h2 class="section-title-text">Book Search</h2>
+            <input class="searchinput" value=""></input>
+            <button class="searchbutton">Go</button>
         </div>
         <div class="listbooks-section">
             <div class="listbooks-container">
@@ -37,22 +39,37 @@
 <!-- JQuery Script-->
 <script>
     $(document).ready(function() {    
-        // List of Books API
         var counter = 0;
-        $.ajax({
-            url: 'https://www.googleapis.com/books/v1/volumes?q=modern%20web',
+
+        // Searching operation and API call
+
+        // TODO: API call is working correctly.
+        //      NEED TO CLEAR LISTINGS WHEN GO IS PRESSED.
+        //      NEED TO FORMAT RESULTS BETTER AND USE PAGINATION.
+        $(".searchbutton").click(function(){
+            var searchinput = $(".searchinput").val();
+            var url;
+            if (!searchinput){
+                url = 'https://www.googleapis.com/books/v1/volumes?q=Web';
+            }
+            else{
+                url = 'https://www.googleapis.com/books/v1/volumes?q=' + searchinput;
+            }
+            console.log(searchinput);
+            $.ajax({
+            url: url,
             type: "GET",
             dataType: "json",
             success: function (data) {
                 console.log(data);
                 var counter = 0;
                 data.items.forEach(item => {
-                    console.log(item.volumeInfo.title);
                     appendBookList(counter);
                     fillBookListing(counter, data);
                     counter++;
-                });
-            }
+                    });
+                }
+            });
         });
     });
 
@@ -172,16 +189,27 @@
         font-weight: bold;
         font-size: 18px;
     }
+    .searchinput {
+        margin: 5px 10px;
+    }
+    .searchbutton {
+        padding: 5px;
+        margin: 5px 10px;
+    }
     .section-title {
         margin-top: 30px;
         margin-bottom: 30px;
         height: 40px;
         line-height: 40px;
         text-align: center;
+        align-content: center;
+        justify-content: center;
         border-top: 1px solid black;
         border-bottom: 1px solid black;
         background-color: lightskyblue;
+        display: flex;
     }
+
     .subheader-text {
         margin: 10px 0px;
     }
