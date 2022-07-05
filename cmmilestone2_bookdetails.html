@@ -11,22 +11,22 @@
         </script>
     </head>
     <body>
-        <header class="mainheader">
-            <h1 class="mainheader-text">Cameron McElwaney - IT 4403 - Section W01 - Summer</h1>
-            <p class="subheader-text">IT4403 Course website developed for class projects.</p>
-            <p class="subheader-text">Course Information: IT4403 Advanced Web & Mobile App</p>
-            <p class="subheader-text">KSU IT: <a href="https://ccse.kennesaw.edu/it/">https://ccse.kennesaw.edu/it/</a></p>
-            <a class="menuitem" href="https://cmcelwa1.github.io/cmcelwa1/cmmilestone2_booksearch.html">Home (Search Page)</a>
-            <a class="menuitem" href="https://cmcelwa1.github.io/cmcelwa1/cmmilestone2_bookshelf.html">My Bookshelf</a>
+        <header class="page-header">
+            <h1 class="page-header__title">Cameron McElwaney - IT 4403 - Section W01 - Summer</h1>
+            <p class="page-header__subtitle">IT4403 Course website developed for class projects.</p>
+            <p class="page-header__subtitle">Course Information: IT4403 Advanced Web & Mobile App</p>
+            <p class="page-header__subtitle">KSU IT: <a href="https://ccse.kennesaw.edu/it/">https://ccse.kennesaw.edu/it/</a></p>
+            <a class="page-header__menu-item" href="https://cmcelwa1.github.io/cmcelwa1/cmmilestone2_booksearch.html">Home (Search Page)</a>
+            <a class="page-header__menu-item" href="https://cmcelwa1.github.io/cmcelwa1/cmmilestone2_bookshelf.html">My Bookshelf</a>
         </header>
         <main>
             <!-- Individual Book / Book Details -->
-            <div class="title-section" id="indbook-section-title">
-                <h2 class="title-section__text">Book Details</h2>
+            <div class="page-title" id="indbook-section-title">
+                <h2 class="page-title__text">Book Details</h2>
             </div>
-            <div class="indbook-section">
-                <div class="bookimage-container">
-                    <img class="indbook-image" src="" alt="Cover Image">
+            <div class="book">
+                <div class="book__image-container">
+                    <img class="book__image" src="" alt="Cover Image">
                 </div>
                 <div class="book-info-container">
                     <div class="book-title">
@@ -67,8 +67,8 @@
                 console.log(data);
                 $(".book-title__main-title").html(data.volumeInfo.title);
                 $(".book-title__sub-title").html(data.volumeInfo.subtitle);
-                $(".indbook-image").attr("src", data.volumeInfo.imageLinks.medium);
-                $(".indbook-image").attr("alt", "Book Cover Image");
+                $(".book__image").attr("src", data.volumeInfo.imageLinks.medium);
+                $(".book__image").attr("alt", "Book Cover Image");
                 $(".book-info__author").html("<b>Author: </b>" + data.volumeInfo.authors[0]);
                 $(".book-info__publisher").html("<b>Publisher: </b>" + data.volumeInfo.publisher);
                 $(".book-info__date-published").html("<b>Date Published: </b>" + data.volumeInfo.publishedDate);
@@ -96,7 +96,7 @@
         margin: 20px 40px;
         background-color: whitesmoke;
     }
-    .bookimage-container {
+    .book__image-container {
         margin-left: 40px;
         margin-top: 60px;
     }
@@ -105,10 +105,10 @@
         margin-left: 40px;
         padding-right: 40px;
     }
-    .book-info-container .book-title {
+    .book-title {
         text-align: center;
     }
-    .book-info h3 {
+    .book-title__sub-title {
         font-weight: bold;
         font-size: 18px;
     }
@@ -129,7 +129,7 @@
         justify-content: center;
         align-content: center;
     }
-    .indbook-image {
+    .book__image {
         width: auto;
         height: 400px;
         border: 1px solid black;
@@ -141,22 +141,22 @@
         width: 160px;
         height: auto;
     }
-    .indbook-section {
+    .book {
         display: flex;
         justify-content: center;  
     }
-    .mainheader {
+    .page-header {
         margin-top: 20px;
         text-align: center;
     }
-    .mainheader p {
+    .page-header__subtitle {
         font-weight: bold;
         font-size: 18px;
     }
-    .menuitem {
+    .page-header__menu-item {
         margin: 10px 5px;
     }
-    .title-section {
+    .page-title {
         margin-top: 30px;
         margin-bottom: 30px;
         height: 40px;
@@ -166,7 +166,7 @@
         border-bottom: 1px solid black;
         background-color: lightskyblue;
     }
-    .subheader-text {
+    .page-header__subtitle {
         margin: 10px 0px;
     }
 </style>
