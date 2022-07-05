@@ -21,26 +21,26 @@
         </header>
         <main>
             <!-- Individual Book / Book Details -->
-            <div class="section-title" id="indbook-section-title">
-                <h2 class="section-title-text">Book Details</h2>
+            <div class="title-section" id="indbook-section-title">
+                <h2 class="title-section__text">Book Details</h2>
             </div>
             <div class="indbook-section">
                 <div class="bookimage-container">
                     <img class="indbook-image" src="" alt="Cover Image">
                 </div>
-                <div class="bookinfo-container">
-                    <div class="booktitle">
-                        <h2 class="indbook-title"></h2>
-                        <h3 class="indbook-subtitle"></h3>
+                <div class="book-info-container">
+                    <div class="book-title">
+                        <h2 class="book-title__main-title"></h2>
+                        <h3 class="book-title__sub-title"></h3>
                     </div>
-                    <div class="bookinfo">
-                        <ul class="bookinfo-ul">
-                            <li class="authorname"></li>
-                            <li class="publishername"></li>
-                            <li class="datepublished"></li>
-                            <li class="genres"></li>
-                            <li class="price"></li>
-                            <li class="description"></li>
+                    <div class="book-info">
+                        <ul class="book-info__info-list">
+                            <li class="book-info__author"></li>
+                            <li class="book-info__publisher"></li>
+                            <li class="book-info__date-published"></li>
+                            <li class="book-info__genres"></li>
+                            <li class="book-info__price"></li>
+                            <li class="book-info__description"></li>
                         </ul>
                     </div>
                 </div>
@@ -65,21 +65,21 @@
             dataType: "json",
             success: function (data) {
                 console.log(data);
-                $(".indbook-title").html(data.volumeInfo.title);
-                $(".indbook-subtitle").html(data.volumeInfo.subtitle);
+                $(".book-title__main-title").html(data.volumeInfo.title);
+                $(".book-title__sub-title").html(data.volumeInfo.subtitle);
                 $(".indbook-image").attr("src", data.volumeInfo.imageLinks.medium);
                 $(".indbook-image").attr("alt", "Book Cover Image");
-                $(".authorname").html("<b>Author: </b>" + data.volumeInfo.authors[0]);
-                $(".publishername").html("<b>Publisher: </b>" + data.volumeInfo.publisher);
-                $(".datepublished").html("<b>Date Published: </b>" + data.volumeInfo.publishedDate);
-                $(".genres").html("<b>Genres: </b>" + data.volumeInfo.categories[0]);
+                $(".book-info__author").html("<b>Author: </b>" + data.volumeInfo.authors[0]);
+                $(".book-info__publisher").html("<b>Publisher: </b>" + data.volumeInfo.publisher);
+                $(".book-info__date-published").html("<b>Date Published: </b>" + data.volumeInfo.publishedDate);
+                $(".book-info__genres").html("<b>Genres: </b>" + data.volumeInfo.categories[0]);
                 if (data.saleInfo.saleability != "NOT_FOR_SALE") {
-                    $(".price").html("<b>Price: </b>$" + data.saleInfo.retailPrice.amount);
+                    $(".book-info__price").html("<b>Price: </b>$" + data.saleInfo.retailPrice.amount);
                 } else {
-                    $(".price").html("<b>Price: </b> Out of stock");
+                    $(".book-info__price").html("<b>Price: </b> Out of stock");
                 }
                 
-                $(".description").html("<b>Description: </b></br></br>" + data.volumeInfo.description);
+                $(".book-info__description").html("<b>Description: </b></br></br>" + data.volumeInfo.description);
             }
         });
     });
@@ -100,26 +100,26 @@
         margin-left: 40px;
         margin-top: 60px;
     }
-    .bookinfo-container {
+    .book-info-container {
         margin-top: 20px;
         margin-left: 40px;
         padding-right: 40px;
     }
-    .bookinfo-container .booktitle {
+    .book-info-container .book-title {
         text-align: center;
     }
-    .bookinfo h3 {
+    .book-info h3 {
         font-weight: bold;
         font-size: 18px;
     }
-    .bookinfo-ul {
+    .book-info__info-list {
         margin-left: 60px;
         list-style: none;
     }
-    .bookinfo-ul li{
+    .book-info__info-list li{
         margin: 20px 0px;
     }
-    .booktitle {
+    .book-title {
         border: 1px solid black;
         margin: 10px;
         background-color: lightblue;
@@ -156,7 +156,7 @@
     .menuitem {
         margin: 10px 5px;
     }
-    .section-title {
+    .title-section {
         margin-top: 30px;
         margin-bottom: 30px;
         height: 40px;
