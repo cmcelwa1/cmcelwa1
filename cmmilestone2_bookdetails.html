@@ -72,7 +72,7 @@
                 $(".authorname").html("<b>Author: </b>" + data.volumeInfo.authors[0]);
                 $(".publishername").html("<b>Publisher: </b>" + data.volumeInfo.publisher);
                 $(".datepublished").html("<b>Date Published: </b>" + data.volumeInfo.publishedDate);
-                $(".genres").html("<b>Genres: </b>" + data.volumeInfo.categories[4]);
+                $(".genres").html("<b>Genres: </b>" + data.volumeInfo.categories[0]);
                 if (data.saleInfo.saleability != "NOT_FOR_SALE") {
                     $(".price").html("<b>Price: </b>$" + data.saleInfo.retailPrice.amount);
                 } else {
