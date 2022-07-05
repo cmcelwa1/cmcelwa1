@@ -105,6 +105,14 @@
         else{
         $("#lb-genre" + counter).html("<b>Genre: </b>" + data.items[counter].volumeInfo.categories);
         }
+
+        // Dynamic link with URL parameter to be used in bookdetails page.
+        $(".targetbook").mouseover(function() {
+            var targetid = this.id;
+            var params = new URLSearchParams();
+            params.append("bookID", targetid);
+            this.href = "https://cmcelwa1.github.io/cmcelwa1/cmmilestone2_bookdetails.html?" + params.toString();
+        });
     };
 
 
