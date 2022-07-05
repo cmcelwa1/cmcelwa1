@@ -18,21 +18,14 @@
         <p class="subheader-text">Course Information: IT4403 Advanced Web & Mobile App</p>
         <p class="subheader-text">KSU IT: <a href="https://ccse.kennesaw.edu/it/">https://ccse.kennesaw.edu/it/</a></p>
         <a class="menuitem" href="https://cmcelwa1.github.io/cmcelwa1/cmmilestone2_booksearch.html">Home (Search Page)</a>
-        <a class="menuitem" href="https://cmcelwa1.github.io/cmcelwa1/cmmilestone2_booksearch.html">My Bookshelf</a>
+        <a class="menuitem">My Bookshelf</a>
     </header>
     <main>
         <!--List of Books -->
         <div class="section-title" id="listbooks-section-title">
-            <h2 class="section-title-text">The Bookshelf</h2>
+            <h2 class="section-title-text">My Bookshelf</h2>
         </div>
         <div class="listbooks-section">
-            <div class="pagebutton-container">
-                <p>Results: (10 per page -- 40 maximum)</p>
-                <button class="pagebutton" id="pagebutton1">1</button>
-                <button class="pagebutton" id="pagebutton2">2</button>
-                <button class="pagebutton" id="pagebutton3">3</button>
-                <button class="pagebutton" id="pagebutton4">4</button>
-            </div>
             <div class="listbooks-container">
                 <ul class="list-books">
                     <!-- List of books generated via JS & JSON object. -->
@@ -46,23 +39,20 @@
 <script>
     $(document).ready(function() {    
         var counter = 0;
-
-        // TODO: NEED BOOKSHELF URL
-        //       NEED TO CONSUME API JSON CORRECTLY
-            var bookshelf_url = 'https://www.googleapis.com/books/v1/volumes?q=Hello&startIndex=0&maxResults=10';
+        var bookshelf_url = 'https://www.googleapis.com/books/v1/users/109604392818559016458/bookshelves/1001/volumes';
             
-            $.ajax({
-                url: bookshelf_url,
-                type: "GET",
-                dataType: "json",
-                success: function (data) {
-                    console.log(data);
-                    var counter = 0;
-                    data.items.forEach(item => {
-                        appendBookList(counter);
-                        fillBookListing(counter, data);
-                        counter++;
-                    });
+        $.ajax({
+            url: bookshelf_url,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                var counter = 0;
+                data.items.forEach(item => {
+                    appendBookList(counter);
+                    fillBookListing(counter, data);
+                    counter++;
+                });
             }
         });
     });
