@@ -31,27 +31,26 @@
                     <tbody>
                         <tr>
                             <td><b>Milestone 1</b></td>
-                            <td>
-                                <a href="https://cmcelwa1.github.io/cmcelwa1/cmmilestone1.html">Individual Book</a>
-                                 -- 
-                                <a href="https://cmcelwa1.github.io/cmcelwa1/cmmilestone1_2.html">List of Books</a>
+                            <td class="multi-link-container">
+                                <a class="page-link" href="https://cmcelwa1.github.io/cmcelwa1/cmmilestone1.html">Individual Book</a>
+                                <a class="page-link" href="https://cmcelwa1.github.io/cmcelwa1/cmmilestone1_2.html">List of Books</a>
                             </td>
                             <td>06/28/2022</td>
                         </tr>
                         <tr>
                             <td><b>Milestone 2</b></td>
-                            <td>
-                                <a href="https://cmcelwa1.github.io/cmcelwa1/cmmilestone2_bookdetails.html">Book Details</a>
-                                -- 
-                               <a href="https://cmcelwa1.github.io/cmcelwa1/cmmilestone2_booksearch.html">Book Search</a>
-                               --
-                               <a href="https://cmcelwa1.github.io/cmcelwa1/cmmilestone2_bookshelf.html">Public Bookshelf</a>
+                            <td class="multi-link-container">
+                                <a class="page-link" href="https://cmcelwa1.github.io/cmcelwa1/cmmilestone2_bookdetails.html">Book Details</a>
+                                <a class="page-link" href="https://cmcelwa1.github.io/cmcelwa1/cmmilestone2_booksearch.html">Book Search</a>
+                                <a class="page-link" href="https://cmcelwa1.github.io/cmcelwa1/cmmilestone2_bookshelf.html">Public Bookshelf</a>
                             </td>
                             <td>07/05/2022</td>
                         </tr>
                         <tr>
                             <td><b>Milestone 3</b></td>
-                            <td>To be completed</td>
+                            <td>
+                                <a class="page-link" href="https://cmcelwa1.github.io/cmcelwa1/cmmilestone3.html">SPA Milestone</a>
+                            </td>
                             <td>07/12/2022</td>
                         </tr>
                         <tr>
@@ -93,6 +92,21 @@
             width: 25%;
             font-size: large;
             background-color: lightblue;
+        }
+        .page-link {
+            padding: 0.3rem;
+            background: #ADD8E6;
+            border-radius: 4px;
+            border: 1px solid black;
+            
+        }
+        .page-link:hover {
+            background: #72cdeb;
+        }
+
+        .multi-link-container {
+            display: flex;
+            justify-content: space-evenly;
         }
     </style>
 </html>
