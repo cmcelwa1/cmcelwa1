@@ -4,8 +4,452 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Milestone3_CM</title>
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
 </head>
 <body>
-    <h>TO BE COMPLETED</h>
+
+    <header class="page-header">
+        <h1 class="page-header__title page-header__item">Cameron McElwaney - IT 4403 - Section W01 - Summer</h1>
+        <p class="page-header__subtitle page-header__item">IT4403 Course website developed for class projects.</p>
+        <p class="page-header__subtitle page-header__item page-header__item">Course Information: IT4403 Advanced Web & Mobile App</p>
+        <p class="page-header__subtitle page-header__item">KSU IT: <a href="https://ccse.kennesaw.edu/it/">https://ccse.kennesaw.edu/it/</a></p>
+        <a class="page-header__menu-item" href="https://cmcelwa1.github.io/cmcelwa1/index.html">Home</a>
+    </header>
+
+    <main>
+        <div class="search">
+            <label class="search__label" for="Search">Search:</label>
+            <input class="search__input" type="text">
+            <button class="search__button">GO</button>
+        </div>
+
+        <div class="page">
+            <p class="page__number-display">Page 1 of 5 (10 per page)</p>
+            <div class="page__buttons-container">
+                <button class="page__button" id="pagebutton1">1</button>
+                <button class="page__button" id="pagebutton2">2</button>
+                <button class="page__button" id="pagebutton3">3</button>
+                <button class="page__button" id="pagebutton4">4</button>
+                <button class="page__button" id="pagebutton5">5</button>
+            </div>
+        </div>
+
+        <div class="results">
+            <!-- Generated using Mustache.js template -->
+            <h1 class="no-search-msg">NO SEARCH PERFORMED YET</h1>
+        </div>
+
+        <footer class="footer">
+            <h1 class = "footer__intro">My Bookshelf Recommendations</h1>
+            <div class="slider">
+                <!-- Begin Mustache generation-->
+                <div class="footer__card-container">
+                    <div class="footer__card">
+                        <div class="footer__image-container">
+                            <img src="http://via.placeholder.com/640x700" alt="" class="footer__image">
+                        </div>
+                        <div class="footer__title-container">
+                            <div class="footer__title">
+                                <p class="">Title</p>
+                            </div>
+                            <div class="footer__genre">
+                                <p class="">Genre</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer__card-container">
+                    <div class="footer__card">
+                        <div class="footer__image-container">
+                            <img src="http://via.placeholder.com/640x360" alt="" class="footer__image">
+                        </div>
+                        <div class="footer__title-container">
+                            <div class="footer__title">
+                                <p class="">Title</p>
+                            </div>
+                            <div class="footer__genre">
+                                <p class="">Genre</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer__card-container">
+                    <div class="footer__card">
+                        <div class="footer__image-container">
+                            <img src="http://via.placeholder.com/640x360" alt="" class="footer__image">
+                        </div>
+                        <div class="footer__title-container">
+                            <div class="footer__title">
+                                <p class="">Title</p>
+                            </div>
+                            <div class="footer__genre">
+                                <p class="">Genre</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer__card-container">
+                    <div class="footer__card">
+                        <div class="footer__image-container">
+                            <img src="http://via.placeholder.com/700x480" alt="" class="footer__image">
+                        </div>
+                        <div class="footer__title-container">
+                            <div class="footer__title">
+                                <p class="">Title</p>
+                            </div>
+                            <div class="footer__genre">
+                                <p class="">Genre</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="back-btn">Back</button>
+            <button class="fwd-btn">Forward</button>
+        </footer>
+
+
+    </main>
+
 </body>
+
+<!-- Mustache.js Template - Book Result card generation -->
+<script id="col-layout-temp" type="text/html">
+    <article class="results__card">
+        <div class="results__img-section">
+            <img src="{{{volumeInfo.imageLinks.thumbnail}}}" alt="" class="results__img">
+        </div>
+        <div class="results__info-section">
+            <p class="results__info results__title"><b>{{volumeInfo.title}}</b></p>
+            <p class="results__info results__title">{{volumeInfo.subtitle}}</p>
+            <div class="show-info-btn__container">
+                <button class="results__show-info-btn">MORE INFORMATION</button>
+            </div>
+        </div>
+    </article>
+</script>
+
+<!-- Javascript -->
+<script>
+$( document ).ready(function() {
+
+    // EVENT HANDLERS
+
+    // Page button click event. Fires AJAX query after processing page number for parameters.
+    $(".page__button").click(function (){
+
+        tempDisable(this); // Disable button to "rate-limit" our AJAX calls
+
+        var pageNumberPressed = $(this).html();
+        setPageNum(pageNumberPressed);
+        clearBookList();
+        var searchInput = $(".search__input").val();
+        if (!searchInput) {
+            searchInput = "Hello";
+        }
+        var startIndex;
+        if (this.id === "pagebutton1") {
+            startIndex = 0;
+        } else if (this.id === "pagebutton2") {
+            startIndex = 10;
+        } else if (this.id === "pagebutton3") {
+            startIndex = 20;
+        } else if (this.id === "pagebutton4") {
+            startIndex = 30;
+        }
+        else {
+            startIndex = 40;
+        }
+        var searchurl = 'https://www.googleapis.com/books/v1/volumes?q=' + searchInput + '&startIndex=' + startIndex + '&maxResults=10';
+        $.ajax({
+            url: searchurl,
+            type: "GET",
+            dataType: "json",
+            success: function(data) {
+                renderBooksArray(data.items);
+            },
+            fail: function() {
+                console.log("Call to API failed.");
+            }
+        })
+    });
+    
+    // Search button click event. Fires AJAX query after processing input.
+    $(".search__button").click(function () {
+        tempDisable(this);
+        clearBookList();
+        setPageNum(1);
+        var searchInput = $(".search__input").val();
+        if (!searchInput) {
+        searchInput = "Hello";
+        }
+        var searchurl = 'https://www.googleapis.com/books/v1/volumes?q=' + searchInput + '&startIndex=0&maxResults=10';
+        $.ajax({
+            url: searchurl,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                renderBooksArray(data.items)
+            },
+            fail: function (data) {
+                console.log("Request to API failed.");
+            }
+        });
+    });
+
+    // FUNCTIONS
+
+    function setPageNum (pageNum) {
+        $(".active").removeClass("active");
+        $(".page__number-display").html("Page " + pageNum + " of 5 (10 per page)");
+        $("#pagebutton" + pageNum).addClass("active");
+    }
+    
+    function tempDisable (element) {
+        $(element).attr('disabled', 'disabled');
+        setTimeout(function () {$(element).removeAttr('disabled');}, 1300);
+    }
+    
+    // Clear listed books function
+    function clearBookList () {
+        $(".no-search-msg").remove();
+        $(".results").remove();
+        $("main").append("<div class='results'></div>");
+    };
+
+    // Append book array mustache template
+    function renderBooksArray(bookArray){
+        $.each(bookArray, function (index, book) {
+                $(".results").append(Mustache.render($("#col-layout-temp").html(), book));
+        });
+    }
+
+});
+</script>
+
+<style>
+
+    *{
+        box-sizing: border-box;
+    }
+
+    .slider {
+        max-width: 2000px;
+        justify-content: space-between;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow: hidden;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: -ms-autohiding-scrollbar; 
+    }
+    .footer__intro {
+        text-align: center;
+        background-color: #ADD8E6;
+        font-size: 1.5rem;
+        border-radius: 4px;
+        border: 1px solid black;
+        padding: 0.5rem;
+    }
+    .footer__card-container {
+        flex-basis: 33.3%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        margin-bottom: 1rem;
+    }
+    .footer__card {
+        margin: 0 4rem;
+        background-color: red;
+        border: 1px solid black;
+    }
+    .footer__image-container {
+        width: 60%;
+        margin: 0.5rem auto;
+    }
+    .footer__image {
+        width: 100%;
+        margin: 0.5rem 0;
+        height: auto;
+        border: 1px solid black;
+    }
+    .footer__title-container {
+        text-align: center;
+    }
+
+
+    .active {
+        background-color: #ADD8E6;
+    }
+
+    .results {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid black;
+    }
+    .results__card {
+        flex-basis: 80%;
+        box-shadow: 0px 0px 4px black;
+        border-radius: 1%;
+        border: 2px solid black;
+        display: flex;
+        background-color: white;
+        margin-bottom: 0.5rem;
+        transition: 0.3s;
+    }
+    .results__card:hover {
+        background-color: #ADD8E6;
+    }
+    .results__img-section {
+        flex-basis: 25%;
+        align-self: center;
+        margin: 1rem 2rem;
+    }
+    .results__img {
+        max-width: 100%;
+    }
+    .results__info {
+        font-size: 1.3rem;
+    }
+    .results__info-section {
+        flex-basis: 80%;
+        padding: 2rem;
+    }
+    .results__title {
+        text-align: center;
+    }
+    .results__show-btn {
+        margin: 0px auto 0.2rem auto;
+        padding: 0.2rem 1rem;
+        font-weight: bold;
+        border-radius: 4px;
+        transition: 0.3s;
+        text-align: center;
+    }
+    .results__show-btn:hover {
+        background:rgb(147, 245, 147);
+    }
+    .results__show-info-btn {
+        border: 2px solid black;
+        border-radius: 4px;
+        font-weight: bold;
+        padding: 1rem;
+        transition: 0.3s;
+    }
+    .results__show-info-btn:hover {
+        background:rgb(147, 245, 147);
+        cursor: pointer;
+    }
+    .show-info-btn__container {
+        display: flex;
+        justify-content: center;
+    }
+    @media screen and (min-width: 800px) {
+
+        .results__img {
+            max-width: 100%;
+        }
+
+        .results__img-section {
+            flex-basis: 25%;
+        }
+        
+        .results__card {
+            flex-basis: 60%;
+        }
+        .results__info-section {
+            flex-basis: 60%;
+        }
+    }
+
+    .search {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        background: #ADD8E6;
+        border: 1px solid black;
+        border-radius: 4px;
+        padding: 0.5rem 0;
+        margin-bottom: 1rem;
+    }
+    .search__label {
+        justify-self: right;
+        align-self: center;
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+    .search__input {
+        flex-basis: 20%;
+        margin: 0 1rem;
+    }
+    .search__button {
+        font-weight: bold;
+        border-radius: 4px;
+        transition: 0.3s;
+        padding: 0.4rem 1rem;
+    }
+    .search__button:hover {
+        background: rgb(147, 245, 147);
+        cursor: pointer;
+    }
+
+    .page-header {
+        text-align: center;
+        font-weight: bold;
+        padding: 0 0 1rem 0;
+    }
+    .page-header__item {
+        margin: 0.3rem;
+    }
+    .page-header__title {
+        font-size: 2rem;
+    }
+    .page-header__subtitle {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    .page-header__menu-item {
+        padding: 0.15rem;
+        background-color: #F0F0F0;
+        border: 2px solid black;
+        border-radius: 4px;
+        text-decoration: none;
+        color: black;
+        transition: 0.3s;
+    }
+    .page-header__menu-item:hover {
+        background: rgb(147, 245, 147);
+    }
+
+    .page__button {
+        margin: 0 0.3rem;
+        padding: 0.3rem 0.5rem;
+        transition: 0.3s;
+    }
+    .page__button:hover {
+        background: rgb(147, 245, 147);
+        cursor: pointer;
+    }
+    .page__buttons-container {
+        display: flex;
+        justify-content: center;
+        margin: 0 0 1rem 0;
+    }
+
+    .page__number-display {
+        text-align: center;
+    }
+
+    .no-search-msg {
+        opacity: 40%;
+    }
+
+</style>
 </html>
