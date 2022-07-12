@@ -38,13 +38,15 @@
                 <button class="page__button" id="pagebutton5">5</button>
             </div>
         </div>
+        <div class="single-book__container">
+
+        </div>
         <div class="results__container">
             <div class="results">
                 <!-- Generated using Mustache.js template -->
                 <h1 class="no-search-msg">NO SEARCH PERFORMED YET</h1>
             </div>
         </div>
-
         
         <footer class="footer">
             <h1 class = "footer__intro">My Bookshelf Recommendations</h1>
@@ -57,7 +59,7 @@
 </body>
 
 <!-- Mustache.js Template - Book Result card generation -->
-<!-- BUTTONS ARE NOT WORKING FROM MUSTACHE.JS TEMPLATE -->
+<!-- -- EVENT Delegation was necessary to make templated buttons click() --  -->
 <script id="col-layout-temp" type="text/html">
     <article class="results__card">
         <div class="results__img-section">
@@ -67,7 +69,7 @@
             <p class="results__info results__title"><b>{{volumeInfo.title}}</b></p>
             <p class="results__info results__title">{{volumeInfo.subtitle}}</p>
             <div class="show-info-btn__container">
-                <button class="single-book-btn results__show-info-btn">MORE INFORMATION</button>
+                <button id="{{{id}}}" class="single-book-btn results__show-info-btn">MORE INFORMATION</button>
             </div>
         </div>
     </article>
@@ -76,7 +78,7 @@
 <!-- Mustache.js Template - Bookshelf card generation -->
 <script id="bookmark-card-template" type="text/html">
     <div class="footer__card-container">
-        <div class="footer__card">
+        <div id="{{{id}}}" class="footer__card single-book-btn">
             <div class="footer__image-container">
                 <img src="{{{volumeInfo.imageLinks.thumbnail}}}" alt="" class="footer__image">
             </div>
@@ -89,27 +91,74 @@
     </div>
 </script>
 
+<!-- Mustache.js Template - Single book card generation -->
+<script id="single-book-template" type="text/html">
+    <div class="single-book">
+        <img class="single-book__img" src="{{{volumeInfo.imageLinks.thumbnail}}}" alt="Book Image">
+        <h1 class="single-book__title">{{volumeInfo.title}}</h1>
+        <p class="single-book__subtitle">{{volumeInfo.subtitle}}</p>
+        <p class="single-book__genre"><b>Genres:</b> {{volumeInfo.categories}}</p>
+        <p class="single-book__price">$ {{saleInfo.retailPrice.amount}}</p>
+        <p class="single-book__descr">Description: {{volumeInfo.description}}</p>
+    </div>
+</script>
+
 <!-- Javascript -->
 <script>
 $( document ).ready(function() {
 
     // EVENT HANDLERS
 
+    // Book information click event to fire single book info view.
     $(document).on("click", ".single-book-btn", function() {
-        console.log("word");
+        tempDisable(this);
+        $(".single-book").remove();
         $(".results").css("width", "60%");
+
+        // Helps display of single book based on if list is populated from search.
+        if ($(this).hasClass("footer__card")) {
+            $(".footer").css("margin-top", "50rem");
+        } else {
+            $(".footer").css("margin-top", "2rem");
+        }
+
+        console.log(this.id);
+        $.ajax({
+            url: 'https://www.googleapis.com/books/v1/volumes/' + this.id,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                // Replace all html markup (e.g. <p> with "" for display to user)
+                data.volumeInfo.description = data.volumeInfo.description.replace(/(<([^>]+)>)/ig, "");
+                data.volumeInfo.description = data.volumeInfo.description.replace(/&lt;br&gt;/gm, " ");
+                data.volumeInfo.description = data.volumeInfo.description.replace(/●/gm, " ");
+
+                console.log(data);
+                renderSingleBook(data);
+                if (data.saleInfo.saleability === "NOT_FOR_SALE"){
+                    $(".single-book__price").html("No price available");
+                }
+                $('html, body').animate({ scrollTop: 0 }, 'slow'); // Scroll to top to see single book.
+            }
+        });
     });
+
+    function renderSingleBook (book) {
+        $(".single-book__container").append(Mustache.render($("#single-book-template").html(), book));
+    }
 
     // Page button click event. Fires AJAX query after processing page number for parameters.
     $(".page__button").click(function (){
         tempDisable(this); // Disable button to "rate-limit" our AJAX calls
+        $(".single-book").remove(); // Remove selected book
+        $(".footer").css("margin-top", "2rem"); // Reset footer margin on single-book closing.
 
         var pageNumberPressed = $(this).html();
         setPageNum(pageNumberPressed);
         clearBookList();
         var searchInput = $(".search__input").val();
         if (!searchInput) {
-            searchInput = "Hello";
+            searchInput = "Example";
         }
         var startIndex;
         if (this.id === "pagebutton1") {
@@ -141,11 +190,13 @@ $( document ).ready(function() {
     // Search button click event. Fires AJAX query after processing input.
     $(".search__button").click(function () {
         tempDisable(this);
+        $(".single-book").remove(); // Remove selected book
+        $(".footer").css("margin-top", "2rem"); // Reset footer margin on single-book closing.
         clearBookList();
         setPageNum(1);
         var searchInput = $(".search__input").val();
         if (!searchInput) {
-        searchInput = "Hello";
+        searchInput = "Example";
         }
         var searchurl = 'https://www.googleapis.com/books/v1/volumes?q=' + searchInput + '&startIndex=0&maxResults=10';
         $.ajax({
@@ -199,6 +250,7 @@ $( document ).ready(function() {
                 renderBookShelfArray(data.items);
             }
         });
+
     function renderBookShelfArray(bookShelfArray){
         $.each(bookShelfArray, function (index, bookShelfItem) {
             $(".slider").append(Mustache.render($("#bookmark-card-template").html(), bookShelfItem));
@@ -228,7 +280,7 @@ $( document ).ready(function() {
     }
 
     footer {
-        padding-top: 1rem;
+        margin-top: 2rem;
     }
 
     .footer__intro {
@@ -238,6 +290,7 @@ $( document ).ready(function() {
         border-radius: 4px;
         border: 1px solid black;
         padding: 0.5rem;
+        z-index: 2;
     }
     .footer__card-container {
         flex-basis: 25%;
@@ -275,6 +328,25 @@ $( document ).ready(function() {
         background-color: #ADD8E6;
     }
 
+    .single-book-btn {
+        z-index: 999;
+    }
+
+    .single-book__container {
+        position: absolute;
+        display: grid;
+        grid-template-columns: repeat(4, 17.5%) 30%;
+        grid-template-areas: ". . . single-book single-book";
+    }
+    .single-book {
+        grid-area: single-book;
+        padding: 2rem;
+        margin-right: 5rem;
+        height: fit-content;
+        border: 2px solid black;
+        box-shadow: 0px 0px 4px black;
+    }
+
     .results {
         display: flex;
         flex-wrap: wrap;
@@ -282,6 +354,7 @@ $( document ).ready(function() {
         padding-bottom: 1rem;
     }
     .results__card {
+        z-index: 999;
         flex-basis: 80%;
         box-shadow: 0px 0px 4px black;
         border-radius: 1%;
