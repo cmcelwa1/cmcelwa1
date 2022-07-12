@@ -57,6 +57,7 @@
 </body>
 
 <!-- Mustache.js Template - Book Result card generation -->
+<!-- BUTTONS ARE NOT WORKING FROM MUSTACHE.JS TEMPLATE -->
 <script id="col-layout-temp" type="text/html">
     <article class="results__card">
         <div class="results__img-section">
@@ -66,7 +67,7 @@
             <p class="results__info results__title"><b>{{volumeInfo.title}}</b></p>
             <p class="results__info results__title">{{volumeInfo.subtitle}}</p>
             <div class="show-info-btn__container">
-                <button class="results__show-info-btn">MORE INFORMATION</button>
+                <button class="single-book-btn results__show-info-btn">MORE INFORMATION</button>
             </div>
         </div>
     </article>
@@ -94,9 +95,13 @@ $( document ).ready(function() {
 
     // EVENT HANDLERS
 
+    $(document).on("click", ".single-book-btn", function() {
+        console.log("word");
+        $(".results").css("width", "60%");
+    });
+
     // Page button click event. Fires AJAX query after processing page number for parameters.
     $(".page__button").click(function (){
-
         tempDisable(this); // Disable button to "rate-limit" our AJAX calls
 
         var pageNumberPressed = $(this).html();
@@ -185,7 +190,6 @@ $( document ).ready(function() {
     }
 
     // Append bookmark array mustache template
-    var testArr = [1, 2, 3, 4, 5, 6]; // DELETE AFTER WORKING CAROUSEL
     var bookshelf_url = 'https://www.googleapis.com/books/v1/users/109604392818559016458/bookshelves/1001/volumes';
     $.ajax({
             url: bookshelf_url,
@@ -200,7 +204,6 @@ $( document ).ready(function() {
             $(".slider").append(Mustache.render($("#bookmark-card-template").html(), bookShelfItem));
         });
     }
-
 });
 </script>
 
@@ -210,6 +213,10 @@ $( document ).ready(function() {
         box-sizing: border-box;
     }
 
+    body {
+        background: rgb(255,255,255);
+        background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 14%, rgba(255,255,255,1) 18%, rgba(255,255,255,1) 20%, rgba(255,255,255,1) 26%, rgba(188,215,217,1) 51%, rgba(67,110,113,1) 81%);
+    }
     .slider {
         max-width: 2000px;
         justify-content: space-between;
@@ -242,6 +249,11 @@ $( document ).ready(function() {
         margin: 0 4rem;
         background-color: #ADD8E6;
         border: 1px solid black;
+        transition: 0.3s;
+    }
+    .footer__card:hover {
+        background-color: rgb(147, 245, 147);
+        cursor: pointer;
     }
     .footer__image-container {
         width: 80%;
@@ -255,6 +267,7 @@ $( document ).ready(function() {
     }
     .footer__title-container {
         text-align: center;
+        margin: 0 2rem;
     }
 
 
@@ -299,17 +312,7 @@ $( document ).ready(function() {
     .results__title {
         text-align: center;
     }
-    .results__show-btn {
-        margin: 0px auto 0.2rem auto;
-        padding: 0.2rem 1rem;
-        font-weight: bold;
-        border-radius: 4px;
-        transition: 0.3s;
-        text-align: center;
-    }
-    .results__show-btn:hover {
-        background:rgb(147, 245, 147);
-    }
+
     .results__show-info-btn {
         border: 2px solid black;
         border-radius: 4px;
@@ -325,7 +328,7 @@ $( document ).ready(function() {
         display: flex;
         justify-content: center;
     }
-    @media screen and (min-width: 800px) {
+    @media only screen and (min-width: 800px) {
 
         .results__img {
             max-width: 100%;
