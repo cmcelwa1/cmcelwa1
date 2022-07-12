@@ -38,82 +38,20 @@
                 <button class="page__button" id="pagebutton5">5</button>
             </div>
         </div>
-
-        <div class="results">
-            <!-- Generated using Mustache.js template -->
-            <h1 class="no-search-msg">NO SEARCH PERFORMED YET</h1>
+        <div class="results__container">
+            <div class="results">
+                <!-- Generated using Mustache.js template -->
+                <h1 class="no-search-msg">NO SEARCH PERFORMED YET</h1>
+            </div>
         </div>
 
+        
         <footer class="footer">
             <h1 class = "footer__intro">My Bookshelf Recommendations</h1>
             <div class="slider">
                 <!-- Begin Mustache generation-->
-                <div class="footer__card-container">
-                    <div class="footer__card">
-                        <div class="footer__image-container">
-                            <img src="http://via.placeholder.com/640x700" alt="" class="footer__image">
-                        </div>
-                        <div class="footer__title-container">
-                            <div class="footer__title">
-                                <p class="">Title</p>
-                            </div>
-                            <div class="footer__genre">
-                                <p class="">Genre</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer__card-container">
-                    <div class="footer__card">
-                        <div class="footer__image-container">
-                            <img src="http://via.placeholder.com/640x360" alt="" class="footer__image">
-                        </div>
-                        <div class="footer__title-container">
-                            <div class="footer__title">
-                                <p class="">Title</p>
-                            </div>
-                            <div class="footer__genre">
-                                <p class="">Genre</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer__card-container">
-                    <div class="footer__card">
-                        <div class="footer__image-container">
-                            <img src="http://via.placeholder.com/640x360" alt="" class="footer__image">
-                        </div>
-                        <div class="footer__title-container">
-                            <div class="footer__title">
-                                <p class="">Title</p>
-                            </div>
-                            <div class="footer__genre">
-                                <p class="">Genre</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer__card-container">
-                    <div class="footer__card">
-                        <div class="footer__image-container">
-                            <img src="http://via.placeholder.com/700x480" alt="" class="footer__image">
-                        </div>
-                        <div class="footer__title-container">
-                            <div class="footer__title">
-                                <p class="">Title</p>
-                            </div>
-                            <div class="footer__genre">
-                                <p class="">Genre</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-            <button class="back-btn">Back</button>
-            <button class="fwd-btn">Forward</button>
         </footer>
-
-
     </main>
 
 </body>
@@ -132,6 +70,22 @@
             </div>
         </div>
     </article>
+</script>
+
+<!-- Mustache.js Template - Bookshelf card generation -->
+<script id="bookmark-card-template" type="text/html">
+    <div class="footer__card-container">
+        <div class="footer__card">
+            <div class="footer__image-container">
+                <img src="{{{volumeInfo.imageLinks.thumbnail}}}" alt="" class="footer__image">
+            </div>
+            <div class="footer__title-container">
+                <div class="footer__title">
+                    <p class="">{{volumeInfo.title}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </script>
 
 <!-- Javascript -->
@@ -220,13 +174,30 @@ $( document ).ready(function() {
     function clearBookList () {
         $(".no-search-msg").remove();
         $(".results").remove();
-        $("main").append("<div class='results'></div>");
+        $(".results__container").append("<div class='results'></div>");
     };
 
     // Append book array mustache template
     function renderBooksArray(bookArray){
         $.each(bookArray, function (index, book) {
                 $(".results").append(Mustache.render($("#col-layout-temp").html(), book));
+        });
+    }
+
+    // Append bookmark array mustache template
+    var testArr = [1, 2, 3, 4, 5, 6]; // DELETE AFTER WORKING CAROUSEL
+    var bookshelf_url = 'https://www.googleapis.com/books/v1/users/109604392818559016458/bookshelves/1001/volumes';
+    $.ajax({
+            url: bookshelf_url,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                renderBookShelfArray(data.items);
+            }
+        });
+    function renderBookShelfArray(bookShelfArray){
+        $.each(bookShelfArray, function (index, bookShelfItem) {
+            $(".slider").append(Mustache.render($("#bookmark-card-template").html(), bookShelfItem));
         });
     }
 
@@ -245,10 +216,14 @@ $( document ).ready(function() {
         display: flex;
         flex-wrap: nowrap;
         overflow-x: auto;
-        overflow: hidden;
         -webkit-overflow-scrolling: touch;
-        -ms-overflow-style: -ms-autohiding-scrollbar; 
+        -ms-overflow-style: -ms-autohiding-scrollbar;
     }
+
+    footer {
+        padding-top: 1rem;
+    }
+
     .footer__intro {
         text-align: center;
         background-color: #ADD8E6;
@@ -258,18 +233,18 @@ $( document ).ready(function() {
         padding: 0.5rem;
     }
     .footer__card-container {
-        flex-basis: 33.3%;
+        flex-basis: 25%;
         flex-grow: 0;
         flex-shrink: 0;
         margin-bottom: 1rem;
     }
     .footer__card {
         margin: 0 4rem;
-        background-color: red;
+        background-color: #ADD8E6;
         border: 1px solid black;
     }
     .footer__image-container {
-        width: 60%;
+        width: 80%;
         margin: 0.5rem auto;
     }
     .footer__image {
@@ -292,7 +267,6 @@ $( document ).ready(function() {
         flex-wrap: wrap;
         justify-content: center;
         padding-bottom: 1rem;
-        border-bottom: 1px solid black;
     }
     .results__card {
         flex-basis: 80%;
@@ -367,6 +341,11 @@ $( document ).ready(function() {
         .results__info-section {
             flex-basis: 60%;
         }
+
+        .footer__image-container {
+        width: 30%;
+        margin: 0.5rem auto;
+    }
     }
 
     .search {
@@ -383,7 +362,7 @@ $( document ).ready(function() {
         justify-self: right;
         align-self: center;
         font-weight: bold;
-        font-size: 1.1rem;
+        font-size: 1.5rem;
     }
     .search__input {
         flex-basis: 20%;
